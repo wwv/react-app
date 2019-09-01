@@ -8,7 +8,7 @@ function resolveRoute(route, params) {
 
 export default class Api {
     static fetch(route, params) {
-        return axios.get(resolveRoute(route, params))
+        return axios.get(resolveRoute(route, params)).then(response => new Promise(resolve => setTimeout(() => resolve(response), 2000)))
     }
 
     static save(route, params) {
