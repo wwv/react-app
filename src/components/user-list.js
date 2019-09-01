@@ -14,7 +14,11 @@ import Loading from "./loading";
 
 class UserList extends React.Component {
     componentDidMount() {
-        this.props.fetchUserList();
+        !this.userListReady() && this.props.fetchUserList();
+    }
+
+    userListReady() {
+        return !!this.props.data.length;
     }
 
     /**
@@ -50,14 +54,23 @@ class UserList extends React.Component {
                         return (
                             <TableRow key={row.name}
                                       hover
-                                      component={Link} to={`/users/${row.userId}/`}
                                       role="checkbox"
                                       tabIndex={-1}>
                                 <TableCell component="th" scope="row">
-                                    {row.userId}
+                                    <Link to={`/users/${row.userId}/`} >
+                                        {row.userId}
+                                    </Link>
                                 </TableCell>
-                                <TableCell align="right">{row.name}</TableCell>
-                                <TableCell align="right">{row.email}</TableCell>
+                                <TableCell align="right">
+                                    <Link to={`/users/${row.userId}/`} >
+                                        {row.name}
+                                    </Link>
+                                </TableCell>
+                                <TableCell align="right">
+                                    <Link to={`/users/${row.userId}/`} >
+                                        {row.email}
+                                    </Link>
+                                </TableCell>
                             </TableRow>
                         )
                     })}
