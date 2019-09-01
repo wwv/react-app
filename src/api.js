@@ -3,7 +3,7 @@ import axios from 'axios';
 const rootPath = '/api/';
 
 function resolveRoute(route, params) {
-    return rootPath + route.replace(/({\S+})/g, (match, p) => params[p])
+    return rootPath + route.replace(/({(\S+)})/g, (match, p, p1) => params[p1])
 }
 
 export default class Api {

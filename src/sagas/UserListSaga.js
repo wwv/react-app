@@ -23,11 +23,11 @@ export function* fetchWatcher() {
 export function reducer(state = initialState, action) {
     switch (action.type) {
         case USER_LIST_REQUEST:
-            return {...state, fetching: true, error: null};
+            return {...state, fetching: true, data: [], error: null};
         case USER_LIST_SUCCESS:
             return {...state, fetching: false, data: action.data};
         case USER_LIST_FAILURE:
-            return {...state, fetching: false, data: null, error: action.error.message};
+            return {...state, fetching: false, data: [], error: 'Невозможно загрузить список пользователей: ' + action.error.message};
         default:
             return state;
     }
