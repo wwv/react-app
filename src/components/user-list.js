@@ -17,6 +17,11 @@ class UserList extends React.Component {
         this.props.fetchUserList();
     }
 
+    /**
+     * Переход по страницам при нажатию на кнопки пагинации
+     * @param event
+     * @param page
+     */
     handleChangePage(event, page) {
         this.props.history.push('/users/page/' + (page + 1));
     }
@@ -45,7 +50,7 @@ class UserList extends React.Component {
                         return (
                             <TableRow key={row.name}
                                       hover
-                                      component={Link} to={`/users/${row.name}/`}
+                                      component={Link} to={`/users/${row.userId}/`}
                                       role="checkbox"
                                       tabIndex={-1}>
                                 <TableCell component="th" scope="row">
@@ -63,11 +68,8 @@ class UserList extends React.Component {
                             colSpan={3}
                             count={data.length}
                             rowsPerPage={10}
+                            rowsPerPageOptions={[10]}
                             page={page}
-                            SelectProps={{
-                                inputProps: { 'aria-label': 'rows per page' },
-                                native: true,
-                            }}
                             onChangePage={this.handleChangePage.bind(this)}
                         />
                     </TableRow>
