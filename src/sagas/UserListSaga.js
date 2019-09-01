@@ -24,10 +24,8 @@ export function reducer(state = initialState, action) {
     switch (action.type) {
         case USER_LIST_REQUEST:
             return {...state, fetching: true, error: null};
-            break;
         case USER_LIST_SUCCESS:
             return {...state, fetching: false, data: action.data};
-            break;
         case USER_LIST_FAILURE:
             return {...state, fetching: false, data: null, error: action.error.message};
         default:
