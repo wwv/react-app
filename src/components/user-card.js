@@ -1,5 +1,6 @@
 import React from "react";
 import {initialState, USER_REQUEST} from "../sagas/UserSaga";
+import {ACL_LIST_REQUEST} from "../sagas/ACLSaga";
 import {connect} from "react-redux";
 import Snackbar from "@material-ui/core/Snackbar";
 import Loading from "./loading";
@@ -7,10 +8,25 @@ import Loading from "./loading";
 class UserCard extends React.Component {
     componentDidMount() {
         this.props.fetchUser(this.props.match.params.id);
+        !this.aclListLoaded() && this.props.fetchAclList()
     }
 
+    /**
+     * Подставляет имя полномочия по его ИД
+     * @param id
+     * @returns {*}
+     */
     resolveAccessName(id) {
-        return id;
+        if (!Object.keys(this.props.aclList).length) return 'loading...';
+        return this.props.aclList[id];
+    }
+
+    /**
+     * Возвращает статус готовности списка полномочий
+     * @returns {boolean}
+     */
+    aclListLoaded() {
+        return !!Object.keys(this.props.aclList).length;
     }
 
     render() {
@@ -43,7 +59,7 @@ class UserCard extends React.Component {
  * @returns {({} & reducer & {data: *}) | ({} & {data} & {data: *})}
  */
 const mapStateToProps = state => {
-    const userReducer = state.userReducer || initialState;
+    const userReducer = {...(state.userReducer || initialState), aclList: state.aclReducer.data};
     if (userReducer.error) return userReducer;
 
     const selectedUser = state.userListReducer.data.find(el => el.userId === userReducer.data.userId)
@@ -55,7 +71,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchUser: (userId) => dispatch({type: USER_REQUEST, payload: {userId}})
+        fetchUser: userId => dispatch({type: USER_REQUEST, payload: {userId}}),
+        fetchAclList: () => dispatch({type: ACL_LIST_REQUEST}),
     };
 };
 

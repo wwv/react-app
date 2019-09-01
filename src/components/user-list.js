@@ -17,6 +17,10 @@ class UserList extends React.Component {
         !this.userListReady() && this.props.fetchUserList();
     }
 
+    /**
+     * Возвращает статус готовности списка пользователей
+     * @returns {boolean}
+     */
     userListReady() {
         return !!this.props.data.length;
     }
